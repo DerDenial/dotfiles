@@ -1,0 +1,9 @@
+[Theme]
+background=
+backgroundColor=#15171b
+surface=#22252c
+border=#626774
+text=#e5e7ef
+muted=#bdc2ce
+accent=#b8c7ee
+error=#ffb4ab

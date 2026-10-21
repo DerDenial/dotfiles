@@ -1,0 +1,5 @@
+# Versions read from the working Material runtime; recreate the venv locally.
+# Python >=3.12 is required by these exact versions; Python 3.14 was used originally.
+material-color-utilities==0.2.6
+numpy==2.5.4
+Pillow==12.3.0
