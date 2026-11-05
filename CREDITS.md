@@ -8,3 +8,6 @@
 - Die frühere Discord-Vorlage stammt von [shvedes/discord-gruvbox](https://github.com/shvedes/discord-gruvbox). Sie wurde mangels auffindbarer Lizenz nicht in den Export übernommen.
 
 Die übrigen Konfigurations- und Oberflächendateien stammen aus dem angepassten Desktop-Setup. Der neutrale SDDM-SVG-Hintergrund wurde für diesen Export erstellt.
+
+- Der Emoji-Katalog enthält bearbeitete Unicode-Emoji- und CLDR-Daten unter der Unicode License v3. Herkunft, Änderungen und die vollständige Lizenz stehen in `.config/quickshell/Emoji/`.
+- Das neutrale PNG-Wallpaper wurde für diesen Export neu erzeugt; es enthält keine übernommenen Bilddaten oder Metadaten.

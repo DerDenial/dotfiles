@@ -1,0 +1,50 @@
+{
+  "builtOn": "2026-10-21",
+  "formatVersion": 1,
+  "unicodeEmojiVersion": "18.0",
+  "license": "Unicode-3.0",
+  "sources": [
+    {
+      "file": "LICENSE-UNICODE.txt",
+      "bytes": 1995,
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+      "url": "https://www.unicode.org/license.txt"
+    },
+    {
+      "file": "annotations-de.xml",
+      "bytes": 336021,
+      "sha256": "af724a245fc334274db3f6c0b15189d54d1fb339bc60599407baab6079925b88",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotations/de.xml"
+    },
+    {
+      "file": "annotations-derived-de.xml",
+      "bytes": 562180,
+      "sha256": "d2b2d279c353cd2b0e29c908339b5536e665436c3fe362e38554ee3a2d15f7d8",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotationsDerived/de.xml"
+    },
+    {
+      "file": "annotations-derived-en.xml",
+      "bytes": 550107,
+      "sha256": "a4a6c1a4c341d94179cb116623c5f44c47400a5bc55da483423ef7430ecf622e",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotationsDerived/en.xml"
+    },
+    {
+      "file": "annotations-en.xml",
+      "bytes": 296588,
+      "sha256": "14d0e9bb5003c085250df4ac7bd7ba1e26d92e74174d7a3a2f42dc16e07fb155",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr/main/common/annotations/en.xml"
+    },
+    {
+      "file": "emoji-test.txt",
+      "bytes": 671655,
+      "sha256": "8f3735cda1f92a779d78af67cf86066bb1f07143dc22f2ac29394d9bc57ab21a",
+      "url": "https://www.unicode.org/Public/emoji/latest/emoji-test.txt"
+    }
+  ],
+  "modifications": [
+    "Only fully-qualified non-Component emoji sequences are retained.",
+    "English and German CLDR names and annotation keywords are merged.",
+    "Skin-tone sequences are nested as variants of their base emoji where available.",
+    "German category search words are added; Unicode order is retained."
+  ]
+}

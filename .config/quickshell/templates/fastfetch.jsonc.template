@@ -1,0 +1,209 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/2.70.0/doc/json_schema.json",
+  "logo": {
+    "type": "data",
+    "source": "            $1/\\\n           $1/$3++$1\\\n          $1/$3++++$1\\\n         $1/$3++++++$1\\\n        $1/$3++++++++$1\\\n       $1/$3++++$2''$3++++$1\\\n      $1/$3++++    ++++$1\\\n     $1/$3++++      ++++$1\\\n    $1/$3++++   $1/\\   $3++++$1\\\n   $1/$3++++   $1/  \\   $3++++$1\\\n  $1/$3++++$2.--$1/    \\$2--.$3++++$1\\\n $1/$2___..-'        '-..___$1\\",
+    "position": "left",
+    "padding": {
+      "top": 2,
+      "left": 1,
+      "right": 4
+    },
+    "printRemaining": false,
+    "color": {
+      "1": "{{accent}}",
+      "2": "{{textBright}}",
+      "3": "{{aqua}}"
+    }
+  },
+  "display": {
+    "separator": "  ",
+    "brightColor": false,
+    "showErrors": false,
+    "color": {
+      "keys": "{{accent}}",
+      "title": "{{accent}}",
+      "output": "{{text}}",
+      "separator": "{{muted}}"
+    },
+    "key": {
+      "width": 17
+    },
+    "percent": {
+      "type": 1
+    }
+  },
+  "modules": [
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "                       A R C H   L I N U X                        ",
+      "outputColor": "{{accent}}"
+    },
+    "break",
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "╭───────────────────────────{#{{accent}}} Hardware {#{{border}}}───────────────────────────╮",
+      "outputColor": "{{border}}"
+    },
+    {
+      "type": "host",
+      "key": "│  ┌─ 󰌢 Device",
+      "keyColor": "{{accent}}",
+      "outputColor": "{{text}}",
+      "format": "{name}"
+    },
+    {
+      "type": "cpu",
+      "key": "│  ├─  CPU",
+      "keyColor": "{{accent}}",
+      "outputColor": "{{text}}",
+      "format": "{name}"
+    },
+    {
+      "type": "gpu",
+      "key": "│  ├─ 󰍛 GPU",
+      "keyColor": "{{accent}}",
+      "outputColor": "{{text}}",
+      "format": "{name}"
+    },
+    {
+      "type": "memory",
+      "key": "│  ├─  Memory",
+      "keyColor": "{{accent}}",
+      "outputColor": "{{text}}",
+      "format": "{used} / {total}  {#{{aqua}}}{percentage}{#output}"
+    },
+    {
+      "type": "disk",
+      "key": "│  └─  Storage",
+      "keyColor": "{{accent}}",
+      "outputColor": "{{text}}",
+      "folders": "/",
+      "format": "{size-used} / {size-total}  {#{{aqua}}}{size-percentage}{#output}"
+    },
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "╰────────────────────────────────────────────────────────────────╯",
+      "outputColor": "{{border}}"
+    },
+    "break",
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "╭───────────────────────────{#{{accent}}} Software {#{{border}}}───────────────────────────╮",
+      "outputColor": "{{border}}"
+    },
+    {
+      "type": "os",
+      "key": "│  ┌─  OS",
+      "keyColor": "{{aqua}}",
+      "outputColor": "{{text}}",
+      "format": "{pretty-name} {arch}"
+    },
+    {
+      "type": "kernel",
+      "key": "│  ├─  Kernel",
+      "keyColor": "{{aqua}}",
+      "outputColor": "{{text}}",
+      "format": "{release}"
+    },
+    {
+      "type": "packages",
+      "key": "│  ├─ 󰏖 Packages",
+      "keyColor": "{{aqua}}",
+      "outputColor": "{{text}}"
+    },
+    {
+      "type": "terminal",
+      "key": "│  ├─  Terminal",
+      "keyColor": "{{aqua}}",
+      "outputColor": "{{text}}",
+      "format": "{pretty-name} {version}"
+    },
+    {
+      "type": "shell",
+      "key": "│  └─  Shell",
+      "keyColor": "{{aqua}}",
+      "outputColor": "{{text}}",
+      "format": "{pretty-name} {version}"
+    },
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "╰────────────────────────────────────────────────────────────────╯",
+      "outputColor": "{{border}}"
+    },
+    "break",
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "╭───────────────────────────{#{{accent}}} Desktop {#{{border}}}────────────────────────────╮",
+      "outputColor": "{{border}}"
+    },
+    {
+      "type": "wm",
+      "key": "│  ┌─  WM",
+      "keyColor": "{{accent}}",
+      "outputColor": "{{text}}",
+      "format": "{pretty-name} {version} · {protocol-name}"
+    },
+    {
+      "type": "display",
+      "key": "│  ├─ 󰍹 Display",
+      "keyColor": "{{accent}}",
+      "outputColor": "{{text}}",
+      "format": "{width} × {height} · {refresh-rate} Hz"
+    },
+    {
+      "type": "terminalfont",
+      "key": "│  └─  Font",
+      "keyColor": "{{accent}}",
+      "outputColor": "{{text}}",
+      "format": "{name} {size}"
+    },
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "╰────────────────────────────────────────────────────────────────╯",
+      "outputColor": "{{border}}"
+    },
+    "break",
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "╭────────────────────────{#{{accent}}} Miscellaneous {#{{border}}}─────────────────────────╮",
+      "outputColor": "{{border}}"
+    },
+    {
+      "type": "uptime",
+      "key": "│  ┌─ 󰅐 Uptime",
+      "keyColor": "{{purple}}",
+      "outputColor": "{{text}}",
+      "format": "{formatted}"
+    },
+    {
+      "type": "battery",
+      "key": "│  ├─ 󰁹 Battery",
+      "keyColor": "{{purple}}",
+      "outputColor": "{{text}}",
+      "format": "{#{{accent}}}{capacity}{#output} · {status}"
+    },
+    {
+      "type": "datetime",
+      "key": "│  └─ 󰃭 Date",
+      "keyColor": "{{purple}}",
+      "outputColor": "{{text}}",
+      "format": "{day-pretty}.{month-pretty}.{year} · {hour-pretty}:{minute-pretty}"
+    },
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "╰────────────────────────────────────────────────────────────────╯",
+      "outputColor": "{{border}}"
+    },
+    "break"
+  ]
+}

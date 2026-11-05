@@ -1,100 +1,137 @@
-# Einrichtung
+# Installation
 
-## 1. Voraussetzungen
+## Compatibility
 
-Die Konfiguration stammt von einem Arch-System mit Hyprland-Lua-Konfiguration und Quickshell 0.3.2. Ältere Hyprland-Versionen, die nur `hyprland.conf` erwarten, können diese Lua-Dateien nicht direkt verwenden.
+This snapshot was prepared from **Hyprland 0.57.1**, **Quickshell 0.3.2** and
+**Qt 6.12** on Arch Linux. It uses Hyprland's Lua configuration and Scrolling
+layout. Releases expecting only `hyprland.conf` cannot use these files directly.
 
-| Bereich | Benötigte Komponenten |
+The user configuration expects `~/.config`, `~/.local/share` and
+`~/Pictures/Wallpapers`. Arbitrary alternative XDG configuration locations are
+not supported throughout the desktop. The public keyboard default is US. Review
+monitor scaling and keyboard layout in `.config/hypr/modules/monitors.lua` and
+`input.lua` for your device.
+
+## Copy with backups
+
+```sh
+./install.sh --check
+./install.sh --dry-run
+./install.sh
+```
+
+Use your normal desktop account, without sudo. The installer verifies the
+configuration checksums built into its script before copying. Existing files are backed up, and unrelated
+files inside destination directories are retained. Editor appearance settings are
+merged with existing settings. JSONC comments and formatting are normalized;
+the exact original remains in the backup. The printed backup path can be used to restore:
+
+```sh
+./install.sh --restore /path/printed/by/the/installer
+```
+
+The default install does not start programs, change services, install packages,
+alter GRUB or copy optional system-wide SDDM files. It adds a generated neutral
+PNG to each theme collection; your personal wallpaper collection is not bundled.
+Existing desktop programs may notice their configuration changing when copied.
+
+## Dependencies
+
+`./install.sh --check` checks local command availability. Install missing packages
+using your distribution's package manager. Match the Hyprland/Quickshell versions
+and modules above before trying to start this desktop.
+
+| Area | Components |
 | --- | --- |
-| Desktop | Hyprland mit Lua und Scrolling-Layout, Quickshell mit Networking-, Bluetooth-, PipeWire-, UPower-, MPRIS-, SystemTray-, Wayland- und Hyprland-Modulen |
-| Qt | Qt 6 / QtQuick, Controls, Layouts, Effects, FolderListModel; GTK-Plattform-Bridge für `QT_QPA_PLATFORMTHEME=gtk3` |
-| Verbindungen | NetworkManager mit `nmcli` und `nmtui`, BlueZ mit `bluetoothctl`, ein PolicyKit-Agent für autorisierte Systemaktionen |
-| Audio und Helligkeit | PipeWire, WirePlumber / `wpctl`, `brightnessctl` |
-| Wallpaper und Benachrichtigungen | `awww` / `awww-daemon`, SwayNC / `swaync-client` |
-| Programme und Werkzeuge | Kitty, Nautilus, Fish, Starship, Fastfetch, Python 3, `wl-clipboard`, Hyprshot, Playerctl, UPower, XDG-Utils, Coreutils, Bash, Awk |
-| Sperren und Abmelden | Hyprlock, Hypridle, Hyprshutdown; passende PAM- und Sitzungsintegration |
-| Optional | Tailscale, TLP, GNOME System Monitor, VSCodium, XSettingsd, Rofi, SDDM |
+| Shell | Hyprland, Quickshell, QtQuick/Controls/Layouts/Effects/FolderListModel, Qt SVG support |
+| Connections | NetworkManager (`nmcli`, `nmtui`), BlueZ (`bluetoothctl`), a PolicyKit authentication agent |
+| Sound and brightness | PipeWire, WirePlumber (`wpctl`), `brightnessctl` |
+| Wallpaper | `awww`, `awww-daemon` |
+| Screenshots and clipboard | `hyprshot`, `hyprpicker`, `wl-copy`, `wl-paste`, system Python with Pillow |
+| Lock and session | `hyprlock`, `hypridle`, `loginctl`; `hyprshutdown` for the logout UI |
+| Terminal and tools | Kitty, Fish, Starship, Fastfetch, Python 3, Bash, Coreutils, XDG-Utils, Nautilus |
+| Fonts | Inter, Material Symbols Rounded, JetBrainsMono Nerd Font Mono/Propo; a color emoji font |
+| Optional | Tailscale, TLP, VSCodium, XSettingsd, Playerctl, GNOME System Monitor, Qt GTK platform bridge |
 
-Die optionalen Komponenten müssen nur eingerichtet werden, wenn die zugehörigen Funktionen verwendet werden. WLAN-/Bluetooth-Autorisierung, Hibernation und Gerätezulassungen sind Systemeinstellungen und werden nicht mit privaten Zugangsdaten exportiert.
+Quickshell provides the notification server. Run a single notification daemon;
+stop another provider such as SwayNC, Mako or Dunst before enabling this one.
+No notification history or daemon preferences from the original machine are
+included. A per-user D-Bus activation override starts the shell instead of
+relaunching SwayNC; it assumes the Arch Quickshell executable at `/usr/bin/qs`.
+Tailscale needs a separate account setup on the target machine.
 
-## 2. Schriften und Icons
+Some legacy battery-detail fallbacks use `BAT0`; update those references if your
+device uses a different battery name. Current status panels also use detected
+devices/UPower. System permissions for brightness, Bluetooth, suspend and power
+actions belong to the target system's session and PolicyKit setup.
 
-Installiere **Inter**, **Material Symbols Rounded**, **JetBrainsMono Nerd Font Mono** und **JetBrainsMono Nerd Font Propo**. Die Material-Schrift liefert die Google-Icons; die Nerd Fonts liefern Terminal-Symbole. Die Hyprland-Konfiguration verwendet den Cursor `Bibata-Modern-Ice`.
+## Material Python environment
 
-Für die Ordnerfarben wird [Colloid](https://github.com/vinceliuice/Colloid-icon-theme) separat installiert. Benötigt werden **Colloid-Dark und Colloid-Light**: Dark verlinkt auf App-Icons im Light-Paket. Die dynamischen Overlay-Icons erzeugt Quickshell später selbst.
-
-Die vorbereitete Integration basiert auf Commit `ceac6608ecd0e40025cbc2ebbd32bf0e0f4ebc6a`. Im entsprechenden Colloid-Quellordner:
-
-```sh
-./install.sh -d "$HOME/.local/share/icons" -s default -t default -notint
-install -m 644 LICENSE "$HOME/.local/share/icons/Colloid-Dark/COPYING"
-install -m 644 LICENSE "$HOME/.local/share/icons/Colloid-Light/COPYING"
-install -m 644 LICENSE "$HOME/.local/share/icons/Colloid/COPYING"
-```
-
-Die Lizenzkopien werden vom Ordnerfarben-Generator benötigt. Die Quickshell-Konfiguration wählt für App-Icons ausdrücklich `Colloid-Dark` aus.
-
-## 3. Konfiguration übernehmen
-
-Sichere vorhandene Konfigurationen außerhalb dieses Repositorys. Übernimm anschließend die gewünschten Unterordner aus `.config/` nach `~/.config/` und die beiden Desktop-Dateien aus `.local/share/applications/` nach `~/.local/share/applications/`.
-
-Führe vorhandene Einstellungen bewusst zusammen. Besonders `VSCodium/User/settings.json` enthält hier ausschließlich kosmetische Einstellungen und ersetzt keine vollständige persönliche Editor-Konfiguration.
-
-Danach kann die Desktop-Datenbank aktualisiert werden:
-
-```sh
-update-desktop-database "$HOME/.local/share/applications"
-```
-
-Die Helfer erwarten die normale Installation unter `~/.config/quickshell`. Ein abweichendes `XDG_CONFIG_HOME` wird nicht durchgängig unterstützt.
-
-## 4. Material-Farben vorbereiten
-
-Erzeuge die virtuelle Python-Umgebung auf dem Zielrechner neu. Die Datei `requirements-material.txt` enthält die Versionen der ursprünglichen Umgebung; sie benötigt Python ab 3.12, ursprünglich wurde Python 3.14 verwendet.
-
-Aus dem Exportordner:
+Create the environment on the target machine; copied virtual environments are
+deliberately excluded. From this export folder:
 
 ```sh
 python3 -m venv "$HOME/.config/quickshell/material-runtime"
 "$HOME/.config/quickshell/material-runtime/bin/python" -m pip install -r requirements-material.txt
 ```
 
-Der Theme-Wechsel erzeugt anschließend die lokalen Farben für GTK, Kitty, Starship, Fastfetch und vorhandene weitere Zielprogramme. Es werden eigene Einstellungen auf dem Zielsystem geschrieben; verwende vorher eine Sicherung.
+This is an explicit download step. It is not run by the copy installer. The
+requirements are the versions used by the source setup and require Python 3.12
+or newer. Material colors, wallpaper thumbnails and profile-photo conversion use
+this environment. The screenshot editor additionally requires Pillow in system
+Python; install your distribution's Python Pillow package.
 
-## 5. Eigene Wallpaper
+## Icons and fonts
 
-Lege eigene Bilder unter `~/Pictures/Wallpapers/` in diesen Theme-Unterordnern ab. Für einen direkt funktionierenden ersten Start sind folgende voreingestellte Dateinamen vorgesehen; sie können in `Theme/Theme.qml` angepasst werden.
+Icon and font packages are installed separately. The shell uses Inter and
+Material Symbols Rounded, and terminal symbols require Nerd Fonts. The configured
+cursor fallback is Bibata-Modern-Ice; another installed cursor can be selected
+under Settings → Personalization → Appearance.
 
-| Ordner | Voreingestellte Datei |
-| --- | --- |
-| `Gruvbox` | `Gruvbox_wallpaper.png` |
-| `Tokyo-Night` | `arch-black-4k.png` |
-| `Catppuccin` | `pexels-eberhardgross-2217366.jpg` |
-| `Kanagawa` | `Kanagawa.png` |
-| `Everforest` | `Everforest.png` |
-| `Nord` | `Nord.png` |
-| `Rose-Pine` | `Rose-Pine.png` |
-| `Dracula` | `Dracula.png` |
-| `Solarized-Dark` | `Solarized-Dark.png` |
-| `Material` | `Welcome.jpg` |
+For automatic folder colors, install **Colloid-Dark** and **Colloid-Light** from
+the [Colloid icon theme](https://github.com/vinceliuice/Colloid-icon-theme), retaining
+its license files. The code expects local base themes and generates its own
+colored overlay. Without Colloid, icon lookup uses the available fallback themes.
+No icons or font binaries are embedded in this export.
 
-Weitere Bilder erscheinen im Wallpaper-Switcher. Die Dateinamen sind lediglich Vorgaben; die zugehörigen Bilder sind nicht Bestandteil des Exports.
+## Wallpapers and profile photo
 
-## 6. An das Gerät anpassen
+The installer prepares these folders with `notch-default.png`:
 
-- `hypr/modules/monitors.lua` verwendet eine generische Monitorregel. Passe Skalierung und Auflösung an dein Display an.
-- Prüfe Tastaturlayout und Eingabegeräte in `hypr/modules/input.lua`.
-- Einige ältere Batterie-Komponenten referenzieren `BAT0`; bei anderen Geräten ist der Name anzupassen. Aktuelle Komponenten verwenden auch UPower.
-- Tailscale benötigt eine eigene Anmeldung und gegebenenfalls die Operator-Berechtigung für den eigenen Benutzer.
-- Der Sperrbildschirm erzeugt seinen Wallpaper-Link lokal über den LockScreen-Helfer; generierte Links sind nicht mitgeliefert.
-- Die Hyprland-Konfiguration startet `qs`, Hypridle, SwayNC und den Wallpaper-Dienst. Starte diese nicht zusätzlich ein zweites Mal über einen anderen Autostart.
+```text
+~/Pictures/Wallpapers/
+  Gruvbox/         Tokyo-Night/     Catppuccin/      Kanagawa/
+  Everforest/      Nord/            Rose-Pine/       Dracula/
+  Solarized-Dark/  Material/
+```
 
-Die beiden Launcher-Einträge für Settings und Notizen brauchen eine laufende Quickshell-Instanz. Weitere Programme kommen aus den auf dem Zielsystem installierten `.desktop`-Einträgen. Office-AppImages und deren persönliche Installationspfade werden nicht mitgeliefert.
+Add your own PNG/JPEG/WebP/BMP images to the collections. Material derives colors
+from its selected wallpaper. The theme switcher lists Material first; Appearance
+settings let you choose the transition. The initial transition is a diagonal wipe.
 
-## 7. Optionale Extras
+Choose a profile photo in Settings → Personalization → Appearance. No original
+photo or selected-photo state is supplied. Legacy automatic photo lookup uses a
+local Pictures/Profile Pictures folder, if present. The chosen photo is normalized
+for the lock screen. Optional SDDM synchronization publishes a readable copy to
+its shared data folder, when that integration is configured.
 
-- SDDM: `extras/sddm/README.md` beschreibt Theme und Farbsynchronisierung.
-- Angepasster Abmeldebildschirm: `extras/hyprshutdown/README.md` enthält die Quellen und Build-Hinweise. Ohne passenden lokalen Build verwendet der Launcher das installierte Hyprshutdown.
-- Die Discord-CSS-Vorlage ist ausgelassen. Der Farbexport überspringt diesen optionalen Teil, solange keine separat bezogene Vorlage vorhanden ist.
+## Start the desktop
 
-Die exportierte Konfiguration wurde für Privatsphäre und Verweise durchgesehen. Auf einem neuen Rechner wurde sie nicht gestartet oder funktional getestet.
+After installing dependencies and reviewing the hardware settings, select the
+Hyprland session through your usual session manager. The supplied autostart starts
+Quickshell, the wallpaper daemon, idle helper and saved cursor configuration.
+Avoid adding duplicate autostarts for the same programs.
+
+For an already running compatible session, reload Hyprland through your normal
+desktop controls. Quickshell watches its configuration. The exported desktop
+entries for Settings, Task Manager and Quick Notes use the running shell's IPC.
+
+## Optional system-wide extras
+
+- `extras/sddm/` contains the login theme and neutral fallback. Its README describes
+  installing it separately and configuring the shared appearance data directory.
+- `extras/hyprshutdown/` contains the custom logout sources and license. Build on
+  the target system, or use the distribution's installed `hyprshutdown` fallback.
+
+No package binaries, Office/AppImage programs, desktop accounts, system boot
+configuration or credentials are installed by the copy script.

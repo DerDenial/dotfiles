@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Task Manager
+Comment=Live CPU, memory and process usage
+Exec=qs ipc call taskManager open
+Icon=utilities-system-monitor
+Terminal=false
+Categories=System;Monitor;
+Keywords=process;cpu;memory;ram;performance;taskmanager;Prozesse;Speicher;
+StartupNotify=false

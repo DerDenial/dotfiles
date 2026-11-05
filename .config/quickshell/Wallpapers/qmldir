@@ -1,0 +1,2 @@
+module Wallpapers
+singleton Cache 1.0 Cache.qml

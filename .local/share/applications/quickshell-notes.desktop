@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Quick Notes
+Name[de]=Schnellnotizen
+Comment=Local notes with automatic saving
+Exec=qs ipc call quickNotes toggle
+Icon=accessories-text-editor
+Terminal=false
+StartupNotify=false
+Categories=Utility;TextEditor;
+Keywords=notes;notizen;quick;memo;
